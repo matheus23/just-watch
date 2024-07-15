@@ -394,6 +394,14 @@ impl<T> Sender<T> {
     }
 }
 
+impl<T> Clone for Sender<T> {
+    fn clone(&self) -> Self {
+        Self {
+            shared: Arc::clone(&self.shared),
+        }
+    }
+}
+
 impl<T> Drop for Sender<T> {
     fn drop(&mut self) {
         self.shared.version.fetch_or(CLOSED, SeqCst);
